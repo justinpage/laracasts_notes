@@ -1,5 +1,8 @@
 Atom feeds decoded
 ==================
+
+[feature/rss](https://github.com/KLVTZ/Laracasts/tree/feature/rss)
+
 In this screen cast, we decoded Atom Feeds. We first grab our currently posted
 data, parse through it, posting it to a blade template that the RSS feed then
 displays. We send a response view so that we can make an XML or Atom feed.

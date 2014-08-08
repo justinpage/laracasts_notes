@@ -1,7 +1,7 @@
 Reports and Graphs
 ==================
 
-(feature/reports-graphs)[https://github.com/KLVTZ/Laracasts/tree/feature/reports-graphs]
+[feature/reports-graphs](https://github.com/KLVTZ/Laracasts/tree/feature/reports-graphs)
 
 Reports and Graphs are an essential aspect in representing data within your
 site. Visually expressing data can provide a greater impact than just

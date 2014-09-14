@@ -7,7 +7,7 @@ Reports and Graphs are an essential aspect in representing data within your
 site. Visually expressing data can provide a greater impact than just
 meaningless numbers.
 
-We will be taking advantage of (chart.js)[http://chartjs.org]. A free, and easy
+We will be taking advantage of [chart.js](http://chartjs.org). A free, and easy
 to use library which uses the famous HTML5 canvas. To begin we pop in our
 resource within our public folder as a JavaScript resource:
 `public/js/vendor/chart.min.js`. We then begin by creating a simple controller

@@ -6,7 +6,7 @@ Presenters
 Many times, when we are working with views, we want to control the way our
 data is presented. We understand that it is not the responsibility of the view
 to contain such logic. As is the same for our models. In reality, view specific
-logic should be separated to it's own bounded context. As a result, presenters
+logic should be separated to it's own sub domain. As a result, presenters
 are an option for isolating custom data accessories.
 
 We begin with the creation of a Presenters folder that will be dedicated to

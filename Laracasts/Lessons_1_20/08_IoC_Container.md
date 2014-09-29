@@ -1,0 +1,136 @@
+The IoC Container
+=================
+The *Inversion of Control container* is a powerful tool for managing class
+dependencies. These dependencies allow the developer to easily bind an interface
+to a concrete example and thus manage class dependencies. At it's most simple
+term, it defines how our application should implement a class or interface. As
+Taylor Otwell expressed, "an IoC container is simply a convenience mechanism for
+achieving the software design pattern: dependency injection.
+
+To demonstrate this, we will work with a small example and then jump into a
+larger, more applicable, case.
+
+We first create a class of `Foo`. That class will have protected instances that
+will be instantiated in the constructor. Those instances will include two other
+classes. We can then call `make` with that class of `Foo`. This will provide the
+object of `Foo` along with the other two inner objects, `Bar` and `Baz`. This is
+extremely powerful because Laravel is allowing us to inject dependencies without
+having to manually code them in.
+
+We can overwrite the `make` function with the bind call of `App`. We can also
+create an instance of the `Foo` object with a new object of `Mock`. This will
+make `Foo` an instance of `Mock`.
+
+```php
+<?php
+
+class Foo {
+	protected $bar;
+	protected $baz;
+
+	public function __construct(Bar $bar, Baz $baz)
+	{
+		$this->bar = $bar;
+		$this->baz = $baz;
+	}
+}
+
+class Bar {}
+
+class Baz {}
+
+class Mock {}
+
+App::instance('Foo', new Mock);
+
+Route::get('/', function()
+{
+	dd(App::make('Foo'));
+});
+```
+
+Now let's move onto a more realistic case where IoC can apply. We have orders.
+Orders in which are used by a controller and are registered as a resource for
+multiple REST requests. That Orders Controller will have access to an Order
+Repository interface that will give us the ability to call out our database and
+make a request. Those requests are separated by name space into their own
+respective files. As indicated in the use call, we are using the Acme Repository
+Order Repository Interface. We then create an instance of that interface in a
+similar fashion as we did in the first example. Next, within our function index
+--which is registered within the Orders call-- we call the method to get all
+our orders from the database. Now behind the scenes, much more is happening:
+
+```php
+<?php
+use Acme\Repositories\OrderRepositoryInterface;
+
+class OrdersController extends BaseController {
+
+	protected $order;
+
+	public function __construct(OrderRepositoryInterface $order)
+	{
+		$this->order = $order;
+	}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		dd($this->order->getAll());
+		$orders = $this->order->getAll();
+		return View::make('orders.index');
+	}
+```
+
+Within our interface, we are using a name space of the Acme Repositories. We
+provide an interface with the specified function to get all orders. This is an
+abstract function, in that it does not contain any body code. We need to include
+an implementation of such a contract.
+
+```php
+<?php namespace Acme\Repositories;
+
+interface OrderRepositoryInterface {
+
+	public function getAll();
+}
+```
+
+In our implementation, we use the name space of the Acme Repository. We then
+create a class that implements the Order Repository Interface.
+
+```php
+<?php namespace Acme\Repositories;
+
+class DbOrderRepository implements OrderRepositoryInterface {
+	public function getAll()
+	{
+		return 'Getting all from mySQL';
+	}
+}
+```
+
+Now this is all great. We have seperated our abstraction form our
+implementation. However, Laravel doesn't know that there is a direct connection
+with those files. We need to bind them together!
+
+This is where the magic happens. Binding the interface with the implementation.
+By providing the following one liner below, we do all this in one step. This is
+powerful because we can bind multiple instances that implement our interface
+class!
+
+```php
+App::bind('Acme\Repositories\OrderRepositoryInterface', 'Acme\Repositories\DbOrderRepository');
+
+Route::resource('orders', 'OrdersController');
+```
+
+Don't forget to always register your PSR-0 namespaces!
+```javascript
+"psr-0": {
+	"Acme": "app/"
+}
+```

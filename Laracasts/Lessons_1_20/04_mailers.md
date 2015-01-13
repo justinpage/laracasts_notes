@@ -54,7 +54,7 @@ class UsersController extends BaseController {
 	}
 ```
 
-Now drawing ourselves back to the store method, we first do a simple query tha
+Now drawing ourselves back to the store method, we first do a simple query that
 finds a user by their identifier.
 
 *you can use PHP Artisan tinker to interact live on your application. You can
@@ -118,8 +118,8 @@ This will make our process faster to send emails instead of waiting for an email
 to submit. For now, we send in our view, data, and closure function. Notice, we
 are sending in a message and then claiming to use the user and subject.
 Remember, the closure is a callback function that will run on callback with the
-use of user and subject. Very similar to JavaScript. We run the unction and then
-run this closure function for th callback. Notice that we are not returning so
+use of user and subject. Very similar to JavaScript. We run the function and then
+run this closure function for the callback. Notice that we are not returning so
 this is a closure for running on callback.
 
 ```php
